@@ -36,38 +36,37 @@ browserOpenPromise
         let signInClickPromise=waitAndClick('button[id="signin_btn"]');
         return signInClickPromise;
     })
-    // .then(function(){
-    //     function getProblemPageLink(){
-    //         let problemPageLink=document.querySelectorAll('.nav-item-container__16kF>a');
-    //         let linkArr=[];
-    //         for(let i=0;i<problemPageLink.length;i++){
-    //             linkArr.push(problemPageLink[i].getAttribute('href'));
-    //         }
-
-    //         return linkArr;
-    //     }
-
-    //     let problemPagePromise=cTab.evaluate(getProblemPageLink);
-    //     return problemPagePromise;
-    // })
-    // .then(function(linksArr){
-    //     console.log(linksArr);
-    //     let fullLink="https://leetcode.com"+linksArr[2];
-    //     let visitProblemPagePromise=cTab.goto(fullLink);
-    //     return visitProblemPagePromise;
-    // })
-    // .then(function(){
-    //     console.log("Problem page visited");
-    // })
     .then(function(){
-        console.log("SignIn button clicked");
-        let clickProblemButtonPromise=waitAndClick('a[href="/problemset/all/"]');
-        return clickProblemButtonPromise;
+        console.log("click on SignIn Button");
+        let waitFor5Sec=cTab.waitForTimeout(5000);
+        return waitFor5Sec;
+    })
+    .then(function(){
+        console.log("5 second wait done");
+        function getProblemPageLink(){
+            let problemPageLink=document.querySelectorAll('.nav-item-container__16kF>a',{delay:50});
+            let linkArr=[];
+            for(let i=0;i<problemPageLink.length;i++){
+                linkArr.push(problemPageLink[i].getAttribute('href'));
+            }
+
+            return linkArr;
+        }
+
+        let problemPagePromise=cTab.evaluate(getProblemPageLink);
+        return problemPagePromise;
+    })
+    .then(function(linksArr){
+        console.log(linksArr);
+        let fullLink="https://leetcode.com"+linksArr[2];
+        console.log(fullLink);
+        let visitProblemPagePromise=cTab.goto(fullLink);
+        return visitProblemPagePromise;
     })
     .then(function(){
         console.log("Problems button clicked");
         function getAllQuesLinks(){
-            let allQueslinks=document.querySelectorAll('div[class="truncate overflow-hidden"] a');
+            let allQueslinks=document.querySelectorAll('a[class="h-5 hover:text-blue-s dark:hover:text-dark-blue-s"]',{delay:100});
             let linksArr=[];
             for(let i=1;i<allQueslinks.length;i++){
                 linksArr.push(allQueslinks[i].getAttribute('href'));
